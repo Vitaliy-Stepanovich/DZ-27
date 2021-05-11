@@ -16,7 +16,7 @@ class ProductExpert:
         print(product)
         
     def show_sales(self):
-      print(self.sales)
+      print(f'Вы купили {self.sales} Спасибо за покупку!')
 
 class Product(ProductExpert):
     """Товар"""
@@ -25,6 +25,7 @@ class Product(ProductExpert):
       self.name = name
       self.price = price
       self.count = count
+      print(f'--{name}, цена {price} руб.')
       
     def __repr__(self):
       return f'Товар: {self.name} | Цена: {self.price} | Колличество: {self.count}'
@@ -36,6 +37,7 @@ class Client:
       
     def make_order(self):
       order = Order()
+      print()
       ans = input('Что покупаем и в каком колличестве через пробел (Пример: хлеб 1), "q" - завершить покупку: ')
       
       while ans != 'q':
@@ -84,7 +86,7 @@ def main():
     
     client.make_order()
     
-    prod_exp.show_products()
+    # prod_exp.show_products()
     prod_exp.show_sales()
     
     
