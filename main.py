@@ -1,22 +1,43 @@
 class ProductExpert:
     """Товаровед"""
     def __init__(self):
-      self.products = []
+      self.products = {}
       self.sales = Sale()
       
     def add_product(self, name, price, count):
-      self.products.append(Product(name, price, count))
+        self.products[name] = Product(name, price, count)
       
+    def update_products(self, order):
+      for product, count in order.order.items():
+        self.products[product].count -= count
+        
     def reg_sale(self, order):
-      self.sales.add_sale(order)
+      if not order.order:
+        return
       
+      if self.check_order(order):
+         self.sales.add_sale(order)
+         self.update_products(order)
+      else:
+        print('Покупка отменена')
+        
+    def check_order(self, order):
+      for product, count in order.order.items():
+        if product not in self.products:
+          print(f'Товара {product} нет у товароведа, покупку нельзя совершить!')
+          return False
+        elif count > self.products[product].count:
+               print(f'У товароведа позиции {product} в наличие {self.products[product].count}, а запрошено {count}')
+               return False
+      return True         
+       
     def show_products(self):
       print('Список продуктов: ')
       for product in self.products:
         print(product)
         
     def show_sales(self):
-      print(f'Вы купили {self.sales} Спасибо за покупку!')
+          print(self.sales)
 
 class Product(ProductExpert):
     """Товар"""
@@ -28,7 +49,7 @@ class Product(ProductExpert):
       print(f'--{name}, цена {price} руб.')
       
     def __repr__(self):
-      return f'Товар: {self.name} | Цена: {self.price} | Колличество: {self.count}'
+      return self.name
 
 class Client:
     """Клиент"""
@@ -92,4 +113,3 @@ def main():
     
 if __name__ == '__main__':
     main()
-
